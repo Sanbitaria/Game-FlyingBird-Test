@@ -22,3 +22,14 @@
 -AI不使用 导致游戏内容丰富性和效率不是很高  
 -但都是自己写的 体会到java的美丽之处   
 
+## 结构
+```text
+FlyBird/
+├── img/                # 图片素材
+├── src/
+│   ├── com.bird/
+│   │   ├── app/        #main方法入口
+│   │   ├── main/       #主要类和逻辑
+│   │   └── util/       #时间类和工具类
+├── FlyBird.iml         
+└── ProjectUML.puml     #类图
