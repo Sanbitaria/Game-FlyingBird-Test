@@ -1,0 +1,299 @@
+@startuml
+skinparam backgroundColor white
+skinparam class {
+    BackgroundColor white
+    BorderColor black
+    FontColor black
+}
+skinparam interface {
+    BackgroundColor white
+    BorderColor black
+    FontColor black
+}
+skinparam arrow {
+    Color black
+}
+skinparam package {
+    BackgroundColor white
+    BorderColor black
+}
+skinparam defaultFontName Monospaced
+skinparam classAttributeIconSize 0
+
+package com.bird.app {
+    class GameApp {
+        +main(String[]): void
+    }
+}
+
+package com.bird.main {
+    interface PropertyStrategy {
+        +PropEffect(Bird): void
+    }
+    class Bird {
+        -rect: Rectangle
+        -hp: int
+        -IsInvincible: boolean
+        -shield: int
+        -invincibleTime: long
+        -nowtime: long
+        -images: BufferedImage[]
+        -Booms: BufferedImage[]
+        -Boobs: BufferedImage[]
+        -state: int
+        -x: int
+        -y: int
+        -up: boolean
+        -upspeed: int
+        -downspeed: int
+        +Bird()
+        +draw(Graphics): void
+        +flyLogic(): void
+        +ShowingLogic(Graphics): void
+        +fly(int): void
+        +getRect(): Rectangle
+        +restart(): void
+        +die(Graphics2D, int): void
+        +setHP(int): void
+        +getInvincible(): void
+        +getShield(): void
+        +hasShield(): boolean
+        +getBoobImage(int): BufferedImage
+    }
+    class Barrier {
+        -rect: Rectangle
+        -disRect: boolean
+        -random: Random
+        -speed: int
+        -visible: boolean
+        -x: int
+        -y: int
+        -width: int
+        -height: int
+        -type: int
+        -mob: boolean
+        +Barrier()
+        +Barrier(int, int, int, int)
+        +drawBarrier(Graphics): void
+        +rect(Graphics): void
+        +setRectangle(int, int, int, int): void
+        +isInFrame(): boolean
+        +getX(): int
+        +setX(int): void
+        +getY(): int
+        +setY(int): void
+        +getHeight(): int
+        +setHeight(int): void
+        +getType(): int
+        +setType(int): void
+        +isVisible(): boolean
+        +setVisible(boolean): void
+        +getRect(): Rectangle
+        +removeRect(): void
+        +backRect(): void
+    }
+    class Barrierpool {
+        -pool: List<Barrier>
+        +Barrierpool()
+        +getPool(): Barrier
+        +setPool(Barrier): Barrier
+    }
+    class GameBarrierLayer {
+        -gameTime: GameTime
+        -random: Random
+        -barriers: List<Barrier>
+        -numberTop: int
+        -numberBottom: int
+        -numberType: int
+        +GameBarrierLayer()
+        +draw(Graphics2D, Bird): void
+        +logic(Graphics2D): void
+        +insert(int, int, int, int): void
+        +ran(): void
+        +TypeNumber(): int
+        +collideBird(Bird): boolean
+        +restart(): void
+        +BarrierKissBird(Barrier, Bird): boolean
+    }
+    class GameFrame {
+        -maskDown: int
+        -IsNewHistory: boolean
+        -IsResetHistory: boolean
+        -IsFirstStart: boolean
+        -IsCease: boolean
+        -WantToBack: int
+        -gameBackGround: GameBackGround
+        -bird: Bird
+        -gameBarrierLayer: GameBarrierLayer
+        -gameFrontGround: GameFrontGround
+        -scoreHistory: ScoreHistory
+        -gamePropLayer: GamePropLayer
+        -gameTime: GameTime
+        -copyright: Copyright
+        -buffimg: BufferedImage
+        -flash: int
+        -FlashOver: boolean
+        -Boom: int
+        -cc: int
+        +GameFrame()
+        +initGameimg(): void
+        +update(Graphics): void
+        +add(KeyEvent): void
+        +minu(KeyEvent): void
+        +restart(): void
+        +pause(): void
+        +resume(): void
+        +BackToMenuOrNot(): void
+    }
+    class GameBackGround {
+        -bkimg: BufferedImage
+        +GameBackGround()
+        +draw(Graphics): void
+    }
+    class GameFrontGround {
+        -random: Random
+        -clouds: List<Cloud>
+        -CLOUD_SPEED: int
+        -img: BufferedImage[]
+        -cloudTimer: int
+        +GameFrontGround()
+        +draw(Graphics): void
+        -logic(): void
+    }
+    class Cloud {
+        -img: BufferedImage
+        -speed: int
+        -x: int
+        -y: int
+        +Cloud()
+        +Cloud(int, int, int, BufferedImage)
+        +draw(Graphics): void
+        +isOutFrame(): boolean
+    }
+    class GamePropLayer {
+        -random: Random
+        -props: List<FlyingProp>
+        -PROP_SPEED: int
+        -img: BufferedImage[]
+        -propTimer: int
+        +GamePropLayer()
+        +draw(Graphics, Bird): void
+        -logic(Bird): void
+    }
+    class FlyingProp {
+        -rectangle: Rectangle
+        -img: BufferedImage
+        -x: int
+        -y: int
+        -speed: int
+        -propertyStrategy: PropertyStrategy
+        +FlyingProp(int, int, int, BufferedImage)
+        +draw(Graphics): void
+        +setPropertyStrategy(PropertyStrategy): void
+        +PropEffect(Bird): void
+        +getRectangle(): Rectangle
+        +IsInvalid(Bird): boolean
+        +IsGetProp(Bird): boolean
+    }
+    class InvincibleProp implements PropertyStrategy {
+        +PropEffect(Bird): void
+    }
+    class ShieldProp implements PropertyStrategy {
+        +PropEffect(Bird): void
+    }
+    class Copyright {
+        -COPYRIGHT_INFORM: String
+        +Copyright()
+        +getInstance(): Copyright
+        +draw(Graphics2D): void
+    }
+}
+
+package com.bird.util {
+    class Constant {
+        +FRAM_WIDTH: int
+        +FRAM_HEIGHT: int
+        +FRAM_TITLE: String
+        +FRAM_X: int
+        +FRAM_Y: int
+        +BK_IMG_PATH: String
+        +BK_COLOR: Color
+        +BIRD_IMG: String[]
+        +BARRIER_IMG: String[]
+        +BOOM_IMG: String[]
+        +PROP_IMG: String[]
+        +BOOB_IMG: String[]
+    }
+    class GameUtil {
+        +loadBufferedImage(String): BufferedImage
+    }
+    class GameTime {
+        -beginTime: long
+        -nowTime: long
+        -endTime: long
+        -differ: long
+        -pauseTime: long
+        -resumeTime: long
+        -IsPause: boolean
+        +getInstance(): GameTime
+        +begin(): void
+        +end(): void
+        +differ(): long
+        +restart(): void
+        +pause(): void
+        +resume(): void
+        +getNowTime(): long
+    }
+    class ScoreHistory {
+        -score: long
+        -file: File
+        +ScoreHistory()
+        +getScore(): long
+        +setScore(long): void
+    }
+}
+
+GameApp --> GameFrame
+
+GameFrame --> Bird
+GameFrame --> GameBarrierLayer
+GameFrame --> GameBackGround
+GameFrame --> GameFrontGround
+GameFrame --> GamePropLayer
+GameFrame --> ScoreHistory
+GameFrame --> GameTime
+GameFrame --> Copyright
+
+GameBarrierLayer --> Barrier
+GameBarrierLayer --> Barrierpool
+GameBarrierLayer --> GameTime
+
+GameFrontGround --> Cloud
+
+GamePropLayer --> FlyingProp
+
+FlyingProp --> PropertyStrategy
+InvincibleProp ..|> PropertyStrategy
+ShieldProp ..|> PropertyStrategy
+
+Barrierpool --> Barrier
+
+Bird --> GameUtil
+Bird --> Constant
+
+Barrier --> GameUtil
+Barrier --> Constant
+
+GameBackGround --> GameUtil
+GameBackGround --> Constant
+
+GameFrontGround --> GameUtil
+
+GamePropLayer --> GameUtil
+GamePropLayer --> Constant
+
+GameFrame --> GameUtil
+GameFrame --> Constant
+
+GameUtil --> Constant
+@enduml
